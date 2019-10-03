@@ -22,7 +22,7 @@ public interface INoticeService {
 
 	boolean existsById(long id);
 
-	boolean existsTitle(String title);
+	boolean existsTitle(String title, long id);
 
 	boolean delete(long id);
 

@@ -78,8 +78,12 @@ public class NoticeService implements INoticeService {
 	}
 
 	@Override
-	public boolean existsTitle(String title) {
-		return this.noticeDao.existsByTitle(title);
+	public boolean existsTitle(String title, long id) {
+		boolean exists = this.noticeDao.existsByTitle(title);
+		if (id > 0 && exists) {
+			return !this.noticeDao.findByTitleAndId(title, id).isPresent();
+		}
+		return exists;
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class NoticeValidator implements Validator {
 
 	private void validateTitle(Notice notice, Errors errors) {
 		if (!this.isEmptyOrNull("title", notice.getTitle(), errors)) {
-			if (this.noticeService.existsTitle(notice.getTitle())) {
+			if (this.noticeService.existsTitle(notice.getTitle(), notice.getId())) {
 				this.addErrorMessage("title", "exists", "This title already exists", errors);
 			}
 		}
