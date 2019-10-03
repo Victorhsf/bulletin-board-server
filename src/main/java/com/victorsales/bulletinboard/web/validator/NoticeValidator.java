@@ -48,37 +48,29 @@ public class NoticeValidator implements Validator {
 	}
 
 	private void validateTitle(Notice notice, Errors errors) {
-		if (!this.isEmptyOrNull("title", notice.getTitle(), errors)
-				&& !this.validateLength("title", notice.getTitle(), 1, 255, errors)) {
-			if (noticeService.existsTitle(notice.getTitle())) {
-				this.addErrorMessage("titleExists", "The field title must be unique", errors);
+		if (!this.isEmptyOrNull("title", notice.getTitle(), errors)) {
+			if (this.noticeService.existsTitle(notice.getTitle())) {
+				this.addErrorMessage("title", "exists", "This title already exists", errors);
 			}
 		}
 	}
 
 	private void validateDescription(Notice notice, Errors errors) {
 		if (!this.isEmptyOrNull("description", notice.getDescription(), errors)) {
-			this.validateLength("description", notice.getDescription(), 1, 255, errors);
 
 		}
 	}
 
 	public boolean isEmptyOrNull(String fieldName, String value, Errors errors) {
 		if (StringUtils.isEmpty(value)) {
-			this.addErrorMessage(fieldName + ".isEmpty", "The field " + fieldName + " not be empty", errors);
+			this.addErrorMessage(fieldName, "isEmpty", "The field " + fieldName + " not be empty", errors);
 			return true;
 		}
 		return false;
 	}
 
-	public boolean validateLength(String fieldName, String value, long min, long max, Errors errors) {
-		if (value == null || value.length() < min || value.length() > max) {
-			errors.rejectValue(fieldName + ".invalidLength",
-					"The field" + fieldName + " must be size between " + min + " and " + max);
-			return true;
-		}
-
-		return false;
+	private void addErrorMessage(String field, final String error, String detailMessage, Errors errors) {
+		errors.rejectValue(field, error, detailMessage);
 	}
 
 	private void addErrorMessage(final String error, String detailMessage, Errors errors) {
