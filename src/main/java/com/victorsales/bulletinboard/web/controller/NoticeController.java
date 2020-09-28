@@ -34,6 +34,10 @@ import com.victorsales.bulletinboard.web.exception.NoticeNotUpdatableException;
 import com.victorsales.bulletinboard.web.exception.ValidationException;
 import com.victorsales.bulletinboard.web.validator.NoticeValidator;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api("Endpoints da para configurar um canalAtendimentoWhatsapp")
 @RestController
 @RequestMapping("/notice")
 public class NoticeController {
@@ -59,22 +63,26 @@ public class NoticeController {
 		return ResponseEntity.ok(noticeService.save(notice));
 	}
 
+	@ApiOperation("return page with NoticeDto objects")
 	@GetMapping
 	public Page<NoticeDto> list(Pageable pageable) {
 		return noticeService.findAll(pageable);
 	}
 
+	@ApiOperation("find notice by id")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> find(@PathVariable("id") long id) {
 		return ResponseEntity
 				.ok(noticeService.find(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT)));
 	}
 
+	@ApiOperation("updated viewedAt field of Notice object by id")
 	@PatchMapping("/visualize/{id}")
 	public ResponseEntity<?> visualize(@PathVariable("id") long id) {
 		return ResponseEntity.ok(this.noticeService.visualize(id));
 	}
-
+	
+	@ApiOperation("updated Notice object")
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody @Valid Notice notice, BindingResult result) {
 		if (result.hasErrors()) {
@@ -83,6 +91,7 @@ public class NoticeController {
 		return ResponseEntity.ok(this.noticeService.update(notice));
 	}
 
+	@ApiOperation("delete Notice object")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") long id) {
 		boolean isDeleted = this.noticeService.delete(id);
