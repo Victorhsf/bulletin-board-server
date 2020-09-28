@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -32,7 +33,14 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.victorsales.bulletinboard"))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(getApiInfo());
+                .apiInfo(getApiInfo())
+                .useDefaultResponseMessages(false)
+				.apiInfo(getApiInfo())
+				.globalResponseMessage(RequestMethod.POST, list)
+				.globalResponseMessage(RequestMethod.GET, list)
+				.globalResponseMessage(RequestMethod.PUT, list)
+				.globalResponseMessage(RequestMethod.PATCH, list)
+				.globalResponseMessage(RequestMethod.DELETE, list);
 	}
 
 	private ApiInfo getApiInfo() {
